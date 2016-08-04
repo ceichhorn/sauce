@@ -1,0 +1,44 @@
+driver:
+  name: ec2
+  aws_ssh_key_id: <%= ENV['AWS_SSH_KEY'] %>
+  security_group_ids:  <%= ENV['AWS_SECURITY_GROUPS'] %>
+  region: <%= ENV['AWS_REGION'] %>
+  availability_zone: <%= ENV['AWS_AVAILABILITY_ZONE'] %>
+  require_chef_omnibus: true
+  subnet_id: <%= ENV['AWS_SUBNET'] %>
+  associate_public_ip: false
+  interface: private
+  user_data: <%= ENV['USER_DATA_PATH'] %>
+  tags:
+    OWNER: <%= ENV['AWS_OWNER_TAG'] %>
+    Name: <%= ENV['AWS_NAME_TAG'] %>
+
+provisioner:
+  name: chef_zero
+  log_level: <%= ENV['CHEF_LOG_LEVEL'] || 'auto' %>
+
+transport:
+  ssh_key: ~/.ssh/<%= ENV['AWS_SSH_KEY'] %>.pem
+
+platforms:
+  - name: centos-6.7
+    driver:
+      image_id: <%= ENV['AWS_CENTOS6_AMI_ID'] %>
+      instance_type: <%= ENV['LINUX_INSTANCE_SIZE'] %>
+      user_data: <%= ENV['LINUX_USER_DATA_PATH'] %>
+    transport:
+      username: <%= ENV['AWS_CENTOS6_USERNAME'] %>
+  - name: centos-7.1
+    driver:
+      image_id: <%= ENV['AWS_CENTOS7_AMI_ID'] %>
+      instance_type: <%= ENV['LINUX_INSTANCE_SIZE'] %>
+      user_data: <%= ENV['LINUX_USER_DATA_PATH'] %>
+    transport:
+      username: <%= ENV['AWS_CENTOS7_USERNAME'] %>
+
+suites:
+  - name: default
+    run_list:
+      - recipe[gd-test-helper::default]
+      - recipe[sauceconnect::default]
+    attributes:
