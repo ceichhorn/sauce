@@ -43,7 +43,7 @@ end
 remote_file "#{Chef::Config[:file_cache_path]}/#{node['sauceconnect']['server']['tarball']}" do
   source "#{node['sauceconnect']['server']['download_url']}/#{node['sauceconnect']['server']['tarball']}"
   action :create
-  notifies :run, 'execute[unzip-saucelabs-proxy]', :immediately
+  notifies :run, 'bash[unzip-saucelabs-proxy]', :immediately
 end
 
 template '/etc/init.d/sauceconnect' do

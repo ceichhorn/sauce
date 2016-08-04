@@ -32,7 +32,7 @@ describe 'sauceconnect::default' do
     it 'creates sauceconnect user' do
       expect(chef_run).to create_user('sauceprx')
     end
-  
+
     directory_list = ['/opt/sauceconnect']
     directory_list.each do |name|
       it 'creates '+ ' directory' do
@@ -44,7 +44,7 @@ describe 'sauceconnect::default' do
       expect(chef_run).to create_remote_file('/tmp/sc-4.3.16-linux.tar.gz')
     end
 
-    
+
 
      it 'creates the sauceconnect config file' do
       expect(chef_run).to create_template('/etc/sysconfig/sauceconnect')
