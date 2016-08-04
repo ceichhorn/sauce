@@ -44,16 +44,21 @@ describe 'sauceconnect::default' do
       expect(chef_run).to create_remote_file('/tmp/sc-4.3.16-linux.tar.gz')
     end
 
+it 'runs deploy_app script' do
+      expect(chef_run).to run_bash('unzip-saucelabs-proxy')
+end
 
+ it 'creates the sauceconnect init file' do
+      expect(chef_run).to create_template('/etc/init.d/sauceconnect')
+    end
 
      it 'creates the sauceconnect config file' do
       expect(chef_run).to create_template('/etc/sysconfig/sauceconnect')
     end
-
-    it 'starts sauceconnect after it is installed' do
-      expect(chef_run).to notify('service[sauceconnect]').to(:start)
-    end
-
+  
+it 'executes both actions' do
+   expect(chef_run).to start_service('sauceconnect')
+ end
 
  end
 

@@ -33,6 +33,14 @@ directory node['sauceconnect']['server']['install_dir'] do
   action :create
 end
 
+# download the file
+file_path = "/tmp/#{node['sauceconnect']['server']['tarball']}"
+remote_file file_path do
+  owner node['sauceconnect']['server']['user']
+  mode '0644'
+  source "#{node['sauceconnect']['server']['download_url']}/#{node['sauceconnect']['server']['tarball']}"
+end
+
 bash 'unzip-saucelabs-proxy' do
   cwd node['sauceconnect']['server']['install_dir']
   code "tar -xzv -C #{node['sauceconnect']['server']['install_dir']} -f #{Chef::Config[:file_cache_path]}/#{node['sauceconnect']['server']['tarball']} --strip-components 1"
