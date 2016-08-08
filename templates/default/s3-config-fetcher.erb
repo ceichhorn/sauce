@@ -23,18 +23,18 @@ TEMP_CONFIG_FILE="${TEMP_CONFIG_DIR}/$i"
 # set target config file
 if [ $i == <%= node['sauceconnect']['server']['app_env'] %>-sauceconnect ]
 then
-TARGET_CONFIG_FILE="<%= node['sauceconnect']['home'] %>/<%= node['sauceconnect']['application']['name'] %>/<%= node['sauceconnect']['config-dir'] %>/database.yml"
+TARGET_CONFIG_FILE="<%= node['sauceconnect']['server']['install_dir'] %>/sauceconnect.conf"
 else
-TARGET_CONFIG_FILE="<%= node['sauceconnect']['home'] %>/<%= node['sauceconnect']['application']['name'] %>/<%= node['sauceconnect']['config-dir'] %>/secrets.yml"
+TARGET_CONFIG_FILE="<%= node['sauceconnect']['server']['install_dir'] %>/sauceconnect.conf"
 fi
 
 date
-echo "Fetching <%= node['sauceconnect']['application']['name'] %>/<%= node['sauceconnect']['application']['app_env'] %>-database.yml"
+echo "Fetching <%= node['sauceconnect']['server']['name'] %>/<%= node['sauceconnect']['server']['app_env'] %>-sauceconnect.conf"
 mkdir -p $TEMP_CONFIG_DIR
-chown <%= node['sauceconnect']['user'] %> $TEMP_CONFIG_DIR
+chown <%= node['sauceconnect']['server']['user'] %> $TEMP_CONFIG_DIR
 rm -f $TEMP_CONFIG_FILE
 
-s3cmd get s3://<%= node['sauceconnect']['s3-config-bucket'] %>/$i $TEMP_CONFIG_FILE
+s3cmd get s3://<%= node['sauceconnect']['server']['s3-config-bucket'] %>/$i $TEMP_CONFIG_FILE
 
 # Verify s3cmd succeeded
 rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
