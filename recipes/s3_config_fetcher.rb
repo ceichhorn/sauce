@@ -25,7 +25,7 @@ end
 
 # setup config
 template config_fetcher_script do
-  source 's3-config-fetcher.sh.erb'
+  source 's3-config-fetcher.erb'
   mode 0755
   owner node['sauceconnect']['server']['user']
 end

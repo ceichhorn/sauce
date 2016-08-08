@@ -2,7 +2,7 @@
 
 source /etc/bashrc
 
-files=("<%= node['sauceconnect']['server']['configuration_files'].join('" "') %>")
+files=("<%= node['sauceconnect']['configuration_files'].join('" "') %>")
 CONFIG_CHANGE=false
 
 for i in "${files[@]}"
@@ -21,7 +21,7 @@ TEMP_CONFIG_DIR="<%= node['sauceconnect']['server']['install_dir'] %>/<%= node['
 TEMP_CONFIG_FILE="${TEMP_CONFIG_DIR}/$i"
 
 # set target config file
-if [ $i == <%= node['sauceconnect']['server']['app_env'] %>-sauceconnect ]
+if [ $i == <%= node['sauceconnect']['server']['app_env'] %>-sauceconnect.conf ]
 then
 TARGET_CONFIG_FILE="<%= node['sauceconnect']['server']['install_dir'] %>/sauceconnect.conf"
 else
@@ -34,7 +34,7 @@ mkdir -p $TEMP_CONFIG_DIR
 chown <%= node['sauceconnect']['server']['user'] %> $TEMP_CONFIG_DIR
 rm -f $TEMP_CONFIG_FILE
 
-s3cmd get s3://<%= node['sauceconnect']['server']['s3-config-bucket'] %>/$i $TEMP_CONFIG_FILE
+s3cmd get s3://<%= node['sauceconnect']['s3-config-bucket'] %>/$i $TEMP_CONFIG_FILE
 
 # Verify s3cmd succeeded
 rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi

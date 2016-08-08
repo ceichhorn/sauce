@@ -49,12 +49,13 @@ end
 
 bash 'unzip-saucelabs-proxy' do
   cwd node['sauceconnect']['server']['install_dir']
-  code "tar -xzv -C #{node['sauceconnect']['server']['install_dir']} -f #{Chef::Config[:file_cache_path]}/#{node['sauceconnect']['server']['tarball']} --strip-components 1"
+  code "tar -xzv -C #{node['sauceconnect']['server']['install_dir']} -f /tmp/#{node['sauceconnect']['server']['tarball']} --strip-components 1"
   action :nothing
   notifies :restart, 'service[sauceconnect]'
 end
 
-
+# include s3 config fetcher recipe prior to migrate command
+include_recipe 'sauceconnect::s3_config_fetcher' if node['sauceconnect']['config-from-s3']
 
 template '/etc/init.d/sauceconnect' do
   source 'sauceconnect.init.erb'
@@ -64,7 +65,7 @@ template '/etc/init.d/sauceconnect' do
   action :create
 end
 
-template '/etc/sysconfig/sauceconnect.conf' do
+template "#{node['sauceconnect']['server']['install_dir']}/sauceconnect.conf" do
   source 'sauceconnect.sysconfig.erb'
   mode 00644
   owner 'root'

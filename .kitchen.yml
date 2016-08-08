@@ -15,3 +15,12 @@ suites:
       - recipe[gd-test-helper::default]
       - recipe[sauceconnect::default]
     attributes:
+      sauceconnect:
+        configuration_files:
+          - sauceconnect.conf
+        s3-config-bucket: 'gdp-testing/sauceconnect'
+        config-from-s3: true
+        config-dir: 'config'
+        s3:
+           aws_key: <%= ENV['CHEF_RUBY_DEPLOYMENT_AWS_KEY'] %>
+           aws_secret: <%= ENV['CHEF_RUBY_DEPLOYMENT_AWS_SECRET_KEY'] %>
