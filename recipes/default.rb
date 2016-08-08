@@ -41,6 +41,12 @@ remote_file file_path do
   source "#{node['sauceconnect']['server']['download_url']}/#{node['sauceconnect']['server']['tarball']}"
 end
 
+remote_file "/tmp/#{node['sauceconnect']['server']['tarball']}" do
+  source "#{node['sauceconnect']['server']['download_url']}/#{node['sauceconnect']['server']['tarball']}"
+  action :create
+  notifies :run, 'bash[unzip-saucelabs-proxy]', :immediately
+end
+
 bash 'unzip-saucelabs-proxy' do
   cwd node['sauceconnect']['server']['install_dir']
   code "tar -xzv -C #{node['sauceconnect']['server']['install_dir']} -f #{Chef::Config[:file_cache_path]}/#{node['sauceconnect']['server']['tarball']} --strip-components 1"
@@ -48,11 +54,7 @@ bash 'unzip-saucelabs-proxy' do
   notifies :restart, 'service[sauceconnect]'
 end
 
-remote_file "#{Chef::Config[:file_cache_path]}/#{node['sauceconnect']['server']['tarball']}" do
-  source "#{node['sauceconnect']['server']['download_url']}/#{node['sauceconnect']['server']['tarball']}"
-  action :create
-  notifies :run, 'bash[unzip-saucelabs-proxy]', :immediately
-end
+
 
 template '/etc/init.d/sauceconnect' do
   source 'sauceconnect.init.erb'
@@ -62,7 +64,7 @@ template '/etc/init.d/sauceconnect' do
   action :create
 end
 
-template '/etc/sysconfig/sauceconnect' do
+template '/etc/sysconfig/sauceconnect.conf' do
   source 'sauceconnect.sysconfig.erb'
   mode 00644
   owner 'root'

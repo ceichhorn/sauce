@@ -29,7 +29,7 @@
 [ ${NETWORKING} = "no" ] && exit 0
 
 # Source config file if it exists
-[ -r /etc/sysconfig/sauceconnect ] && . /etc/sysconfig/sauceconnect
+[ -r /etc/sysconfig/sauceconnect.conf ] && . /etc/sysconfig/sauceconnect.conf
 
 logfile=${LOGFILE}
 sauceuser=${SAUCEUSER}

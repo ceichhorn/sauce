@@ -53,7 +53,7 @@ describe 'sauceconnect::default' do
     end
 
      it 'creates the sauceconnect config file' do
-      expect(chef_run).to create_template('/etc/sysconfig/sauceconnect')
+      expect(chef_run).to create_template('/etc/sysconfig/sauceconnect.conf')
     end
 
     it 'executes both actions' do

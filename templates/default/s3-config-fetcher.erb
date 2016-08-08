@@ -1,0 +1,59 @@
+#!/bin/bash
+
+source /etc/bashrc
+
+files=("<%= node['sauceconnect']['server']['configuration_files'].join('" "') %>")
+CONFIG_CHANGE=false
+
+for i in "${files[@]}"
+do
+
+# if environment is null, set environment to development
+if [[ -z <%= node['sauceconnect']['server']['app_env'] %> ]]
+then
+  <%= node['sauceconnect']['server']['app_env'] %>="development"
+fi
+
+# set temporary config directory
+TEMP_CONFIG_DIR="<%= node['sauceconnect']['server']['install_dir'] %>/<%= node['sauceconnect']['server']['name'] %>-configs"
+
+# set temporary config file
+TEMP_CONFIG_FILE="${TEMP_CONFIG_DIR}/$i"
+
+# set target config file
+if [ $i == <%= node['sauceconnect']['server']['app_env'] %>-sauceconnect ]
+then
+TARGET_CONFIG_FILE="<%= node['sauceconnect']['home'] %>/<%= node['sauceconnect']['application']['name'] %>/<%= node['sauceconnect']['config-dir'] %>/database.yml"
+else
+TARGET_CONFIG_FILE="<%= node['sauceconnect']['home'] %>/<%= node['sauceconnect']['application']['name'] %>/<%= node['sauceconnect']['config-dir'] %>/secrets.yml"
+fi
+
+date
+echo "Fetching <%= node['sauceconnect']['application']['name'] %>/<%= node['sauceconnect']['application']['app_env'] %>-database.yml"
+mkdir -p $TEMP_CONFIG_DIR
+chown <%= node['sauceconnect']['user'] %> $TEMP_CONFIG_DIR
+rm -f $TEMP_CONFIG_FILE
+
+s3cmd get s3://<%= node['sauceconnect']['s3-config-bucket'] %>/$i $TEMP_CONFIG_FILE
+
+# Verify s3cmd succeeded
+rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
+
+if [ -f $TARGET_CONFIG_FILE ]; then
+  diff $TEMP_CONFIG_FILE $TARGET_CONFIG_FILE
+  rc=$?;
+
+  if [[ $rc == 0 ]]; then
+    echo "No Changes Found"
+  elif [[ $rc == 2 ]]; then
+    echo "BAD FILE, IGNORING"
+    exit $rc;
+  else
+    echo "Changes Found, Deploying New Config"
+  cp -v $TEMP_CONFIG_FILE $TARGET_CONFIG_FILE
+  CONFIG_CHANGE=true
+  fi
+fi
+
+done
+
