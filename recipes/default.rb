@@ -51,10 +51,10 @@ bash 'unzip-saucelabs-proxy' do
   cwd node['sauceconnect']['server']['install_dir']
   code "tar -xzv -C #{node['sauceconnect']['server']['install_dir']} -f /tmp/#{node['sauceconnect']['server']['tarball']} --strip-components 1"
   action :nothing
-  notifies :restart, 'service[sauceconnect]'
+  
 end
 
-# include s3 config fetcher recipe prior to migrate command
+# include s3 config fetcher recipe prior to restart
 include_recipe 'sauceconnect::s3_config_fetcher' if node['sauceconnect']['config-from-s3']
 
 template '/etc/init.d/sauceconnect' do
@@ -71,6 +71,7 @@ template "#{node['sauceconnect']['server']['install_dir']}/sauceconnect.conf" do
   owner 'root'
   group 'root'
   action :create
+  notifies :restart, 'service[sauceconnect]'
 end
 
 service 'sauceconnect' do
