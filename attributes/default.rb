@@ -42,4 +42,3 @@ default['sauceconnect']['s3']['aws_secret'] = 'secretssshhhh'
 # ["'#{node['ruby-deployment']['application']['name']}-
 # {node['ruby-deployment']['application']['app_env']}-sauceconnect.conf',
 default['sauceconnect']['configuration_files'] = nil
-

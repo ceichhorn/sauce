@@ -51,7 +51,6 @@ bash 'unzip-saucelabs-proxy' do
   cwd node['sauceconnect']['server']['install_dir']
   code "tar -xzv -C #{node['sauceconnect']['server']['install_dir']} -f /tmp/#{node['sauceconnect']['server']['tarball']} --strip-components 1"
   action :nothing
-  
 end
 
 # include s3 config fetcher recipe prior to restart

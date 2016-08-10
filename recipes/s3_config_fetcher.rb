@@ -30,7 +30,6 @@ template config_fetcher_script do
   owner node['sauceconnect']['server']['user']
 end
 
-
 # execute config
 execute 's3-config-command' do
   command "su #{node['sauceconnect']['user']} -l -c '#{config_fetcher_command}'"
