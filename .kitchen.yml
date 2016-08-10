@@ -22,8 +22,9 @@ suites:
         config-from-s3: true
         config-dir: 'config'
         s3:
-           aws_key: <%= ENV['CHEF_SAUCECONNECT_AWS_KEY'] %>
-           aws_secret: <%= ENV['CHEF_SAUCECONNECT_AWS_SECRET_KEY'] %>
+          test_config: true
+          aws_key: <%= ENV['CHEF_SAUCECONNECT_AWS_KEY'] %>
+          aws_secret: <%= ENV['CHEF_SAUCECONNECT_AWS_SECRET_KEY'] %>
     scalr:
         check-command: "echo scalr"
         environment-check-command: "echo Testing"
