@@ -23,9 +23,8 @@ include_recipe 'ark'
 
 user node['sauceconnect']['server']['user'] do
   comment 'SauceLabs Proxy User'
-  system true
   action :create
-  shell '/bin/false'
+  home node['sauceconnect']['server']['install_dir']
 end
 
 directory node['sauceconnect']['server']['install_dir'] do
@@ -38,7 +37,7 @@ end
 
 ark 'sauceconnect' do
   url "#{node['sauceconnect']['server']['download_url']}/#{node['sauceconnect']['server']['tarball']}"
-  path node['sauceconnect']['server']['install_dir']
+  path "/opt"
   action :put
   owner node['sauceconnect']['server']['user']
 end
