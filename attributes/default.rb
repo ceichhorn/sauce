@@ -36,8 +36,6 @@ default['sauceconnect']['server']['api_key'] = 'test'
 # s3 fetch configuration
 default['sauceconnect']['config-from-s3'] = false
 default['sauceconnect']['s3-config-bucket'] = nil
-default['sauceconnect']['s3']['aws_key'] = 'awskeyhere'
-default['sauceconnect']['s3']['aws_secret'] = 'secretssshhhh'
 # configuration_files example
 # ["'#{node['ruby-deployment']['application']['name']}-
 # {node['ruby-deployment']['application']['app_env']}-sauceconnect.conf',

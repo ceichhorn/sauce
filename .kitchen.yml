@@ -7,10 +7,16 @@ provisioner:
   log_level: <%= ENV['CHEF_LOG_LEVEL'] || 'auto' %>
 
 platforms:
-  - name: gannett/gci-centos-72
+  - name: centos-7.1
+    driver:
+      box: centos-71
+      box_url: https://deploy.gmti.gbahn.net/Images/centos7/vagrant/centos71-cloud-1.0.0.box
+      network:
+        - ["forwarded_port", {guest: 80, host: 8080}]
 
 suites:
   - name: default
+    data_bags_path: test/integration/data_bags
     run_list:
       - recipe[test-variables]
       - recipe[gd-test-helper::default]
