@@ -21,13 +21,11 @@ Key | Type | Description | Default
 ['sauceconnect']['server']['log_file'] | String | Where to log | #{node['sauceconnect']['server']['install_dir']}/sauceconnect.log
 ['sauceconnect']['server']['pid_file'] | String | Pid file location | /var/run/sauceconnect.pid
 ['sauceconnect']['server']['app_env'] | String | Environment you are in | development
-
 ['sauceconnect']['server']['api_user'] | String | Sauce Connect client name | test
 ['sauceconnect']['server']['api_key'] | String | API key for your | test
-
 ['sauceconnect']['config-from-s3'] | String | S3 bucket with your Sauce Connect config | false
-['sauceconnect']['s3-config-bucket'] | String |  nil
-default['sauceconnect']['configuration_files']| String | nil
+['sauceconnect']['s3-config-bucket'] | String |  S3 bucket name | nil
+['sauceconnect']['configuration_files']| String | Sauce Connect config file | nil
 
 
 ### Notes
@@ -56,4 +54,4 @@ Include `sauceconnect` in your node's `run_list`:
 
 ## License and Authors
 
-Author:: Gannett Paas Delivery (<devops@gannett.com>)
+Author:: Gannett Paas Optimization (<paas-optimization@gannett.com>)
