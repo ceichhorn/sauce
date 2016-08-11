@@ -1,8 +1,7 @@
 # chef-sauceconnect
 
-This cookbook sets up a VM to serve a ruby app using Nginx and Passenger.  Ruby is installed using RVM.
+This cookbook sets  up the Sauce Labs client to connect into Sauce Labs.
 
-Centos 7.1 is required for Passenger to be installed via package and not require Nginx to be recompiled.  Nginx 1.8 is supported on Centos 7.1.
 
 ## Supported Platforms
 
@@ -29,9 +28,10 @@ Key | Type | Description | Default
 
 
 ### Notes
+
 # configuration_files example
-# ["'#{node['ruby-deployment']['application']['name']}-
-# {node['ruby-deployment']['application']['app_env']}-sauceconnect.conf',
+# ["'#{node['sauceconnect']['server']['name']}-
+# {node['sauceconnect']['server']['app_env']}-sauceconnect.conf',
 
 
 ## Usage

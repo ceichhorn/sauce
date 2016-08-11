@@ -37,6 +37,6 @@ default['sauceconnect']['server']['api_key'] = 'test'
 default['sauceconnect']['config-from-s3'] = false
 default['sauceconnect']['s3-config-bucket'] = nil
 # configuration_files example
-# ["'#{node['ruby-deployment']['application']['name']}-
-# {node['ruby-deployment']['application']['app_env']}-sauceconnect.conf',
+# ["'#{node['sauceconnect']['server']['name']}-
+# {node['sauceconnect']['server']['app_env']}-sauceconnect.conf',
 default['sauceconnect']['configuration_files'] = nil
