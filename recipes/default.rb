@@ -29,7 +29,7 @@ end
 
 directory node['sauceconnect']['server']['install_dir'] do
   owner node['sauceconnect']['server']['user']
-  mode 00755
+  mode 0755
   action :create
 end
 
@@ -40,6 +40,15 @@ ark 'sauceconnect' do
   path "/opt"
   action :put
   owner node['sauceconnect']['server']['user']
+end
+
+template "#{node['sauceconnect']['server']['install_dir']}/sauceconnect.conf" do
+  source 'sauceconnect.sysconfig.erb'
+  mode 00644
+  owner node['sauceconnect']['server']['user']
+  group 'root'
+  action :create
+  notifies :restart, 'service[sauceconnect]'
 end
 
 # include s3 config fetcher recipe prior to restart
@@ -53,14 +62,7 @@ template '/etc/init.d/sauceconnect' do
   action :create
 end
 
-template "#{node['sauceconnect']['server']['install_dir']}/sauceconnect.conf" do
-  source 'sauceconnect.sysconfig.erb'
-  mode 00644
-  owner 'root'
-  group 'root'
-  action :create
-  notifies :restart, 'service[sauceconnect]'
-end
+
 
 service 'sauceconnect' do
   supports :restart => true

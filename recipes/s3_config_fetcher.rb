@@ -34,5 +34,4 @@ end
 execute 's3-config-command' do
   command "su #{node['sauceconnect']['user']} -l -c '#{config_fetcher_command}'"
   user 'root'
-  action :nothing
 end
