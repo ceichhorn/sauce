@@ -21,12 +21,7 @@ TEMP_CONFIG_DIR="<%= node['sauceconnect']['server']['install_dir'] %>/<%= node['
 TEMP_CONFIG_FILE="${TEMP_CONFIG_DIR}/$i"
 
 # set target config file
-if [ $i == <%= node['sauceconnect']['server']['app_env'] %>-sauceconnect.conf ]
-then
 TARGET_CONFIG_FILE="<%= node['sauceconnect']['server']['install_dir'] %>/sauceconnect.conf"
-else
-TARGET_CONFIG_FILE="<%= node['sauceconnect']['server']['install_dir'] %>/sauceconnect.conf"
-fi
 
 date
 echo "Fetching <%= node['sauceconnect']['server']['name'] %>/<%= node['sauceconnect']['server']['app_env'] %>-sauceconnect.conf"
@@ -56,4 +51,3 @@ if [ -f $TARGET_CONFIG_FILE ]; then
 fi
 
 done
-

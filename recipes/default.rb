@@ -56,7 +56,7 @@ include_recipe 'sauceconnect::s3_config_fetcher' if node['sauceconnect']['config
 
 template '/etc/init.d/sauceconnect' do
   source 'sauceconnect.init.erb'
-  mode 00755
+  mode 0755
   owner 'root'
   group 'root'
   action :create
