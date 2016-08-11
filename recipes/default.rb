@@ -39,10 +39,10 @@ end
 ark 'sauceconnect' do
   url "#{node['sauceconnect']['server']['download_url']}/#{node['sauceconnect']['server']['tarball']}"
   path node['sauceconnect']['server']['install_dir']
-  action :dump
+  action :put
   owner node['sauceconnect']['server']['user']
 end
-  
+
 # include s3 config fetcher recipe prior to restart
 include_recipe 'sauceconnect::s3_config_fetcher' if node['sauceconnect']['config-from-s3']
 

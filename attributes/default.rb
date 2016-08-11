@@ -22,7 +22,7 @@
 default['sauceconnect']['server']['version'] = '4.3.16'
 default['sauceconnect']['server']['download_url'] = 'http://saucelabs.com/downloads'
 default['sauceconnect']['server']['tarball'] = "sc-#{node['sauceconnect']['server']['version']}-linux.tar.gz"
-default['sauceconnect']['server']['install_dir'] = '/opt/sauceconnect'
+default['sauceconnect']['server']['install_dir'] = '/opt'
 default['sauceconnect']['server']['user'] = 'sauceprx'
 default['sauceconnect']['server']['log_file'] = "#{node['sauceconnect']['server']['install_dir']}/sauceconnect.log"
 default['sauceconnect']['server']['pid_file'] = '/var/run/sauceconnect.pid'
