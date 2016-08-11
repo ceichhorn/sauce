@@ -19,6 +19,7 @@
 #
 
 include_recipe 'gdp-base-linux'
+include_recipe 'ark'
 
 user node['sauceconnect']['server']['user'] do
   comment 'SauceLabs Proxy User'
@@ -34,25 +35,14 @@ directory node['sauceconnect']['server']['install_dir'] do
 end
 
 # download the file
-file_path = "/tmp/#{node['sauceconnect']['server']['tarball']}"
-remote_file file_path do
+
+ark 'sauceconnect' do
+  url "#{node['sauceconnect']['server']['download_url']}/#{node['sauceconnect']['server']['tarball']}"
+  path node['sauceconnect']['server']['install_dir']
+  action :dump
   owner node['sauceconnect']['server']['user']
-  mode '0644'
-  source "#{node['sauceconnect']['server']['download_url']}/#{node['sauceconnect']['server']['tarball']}"
 end
-
-remote_file "/tmp/#{node['sauceconnect']['server']['tarball']}" do
-  source "#{node['sauceconnect']['server']['download_url']}/#{node['sauceconnect']['server']['tarball']}"
-  action :create
-  notifies :run, 'bash[unzip-saucelabs-proxy]', :immediately
-end
-
-bash 'unzip-saucelabs-proxy' do
-  cwd node['sauceconnect']['server']['install_dir']
-  code "tar -xzv -C #{node['sauceconnect']['server']['install_dir']} -f /tmp/#{node['sauceconnect']['server']['tarball']} --strip-components 1"
-  action :nothing
-end
-
+  
 # include s3 config fetcher recipe prior to restart
 include_recipe 'sauceconnect::s3_config_fetcher' if node['sauceconnect']['config-from-s3']
 
